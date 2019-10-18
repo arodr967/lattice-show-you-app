@@ -9,21 +9,20 @@ export default class MoviePoster extends React.Component {
   }
 
   render() {
+    const POSTER_PATH = 'https://image.tmdb.org/t/p/w500/';
+
     return (
       <Card style={{ maxWidth: 345, margin: 16 }}>
         <CardActionArea>
           <CardMedia
             component="img"
-            alt="Captain Marvel"
+            alt={this.props.title}
             height="500"
-            src="https://cdn.collider.com/wp-content/uploads/2019/01/captain-marvel-poster-brie-larson.jpg"
-            title="Captain Marvel"
+            src={POSTER_PATH + this.props.posterPath}
+            title={this.props.title}
           />
         </CardActionArea>
       </Card>
     );
   }
 }
-
-// api-key: 2af40492d105b5c1dc33be95d778a3d7
-// posterpath: https://image.tmdb.org/t/p/w500/
