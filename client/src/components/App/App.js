@@ -3,8 +3,10 @@ import './App.css';
 
 import { SearchInput } from '../SearchInput';
 import { MoviePosterList } from '../MoviePosterList';
-import MoviePoster from '../MoviePoster/MoviePoster';
+import {MoviePoster} from '../MoviePoster';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import { BrowserRouter as Router, Switch, Route, Link } from 'react-router-dom';
+import { MovieDetailsPage } from '../MovieDetailsPage';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -49,10 +51,12 @@ export default class App extends React.Component {
       return (
         <MoviePosterList>
           {this.state.movies.map(movie => (
-            <MoviePoster
-              title={movie.original_title}
-              posterPath={movie.poster_path}
-            />
+            <Link to={`/${movie.id}`}>
+              <MoviePoster
+                title={movie.original_title}
+                posterPath={movie.poster_path}
+              />
+            </Link>
           ))}
         </MoviePosterList>
       );
@@ -79,17 +83,24 @@ export default class App extends React.Component {
   render() {
     return (
       <div className="App">
-        <div>
-          <div>
-            <header>
-              <h1>Lattice Show You</h1>
-              <p>... the most popular movies this year!</p>
-            </header>
-            <SearchInput onSearch={this.searchMovies} />
-          </div>
+        <Router>
+          <Switch>
+            <Route path="/:movieId" component={MovieDetailsPage}></Route>
+            <Route path="/">
+              <div>
+                <div>
+                  <header>
+                    <h1>Lattice Show You</h1>
+                    <p>... the most popular movies this year!</p>
+                  </header>
+                  <SearchInput onSearch={this.searchMovies} />
+                </div>
 
-          {this.displayMovies()}
-        </div>
+                {this.displayMovies()}
+              </div>
+            </Route>
+          </Switch>
+        </Router>
       </div>
     );
   }
