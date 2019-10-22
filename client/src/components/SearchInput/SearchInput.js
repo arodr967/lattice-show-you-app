@@ -5,16 +5,12 @@ import Search from '@material-ui/icons/Search';
 import TextField from '@material-ui/core/TextField';
 
 export default class SearchInput extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      searchCriteria: ''
-    };
-  }
 
-  handleChange(event) {
+  handleChange = (event) => {
     event.preventDefault();
-    this.setState({ searchCriteria: event.target.value });
+    const search = event.target.value;
+    this.setState({ search });
+    this.props.onSearch(search);
   }
 
   render() {
@@ -24,7 +20,7 @@ export default class SearchInput extends React.Component {
           style={{ width: 500 }}
           label="Search for your favorite movie"
           onChange={this.handleChange}
-          value={this.state.searchCriteria}
+          value={this.props.search}
           InputProps={{
             startAdornment: (
               <InputAdornment position="start">

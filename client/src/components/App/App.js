@@ -16,6 +16,10 @@ export default class App extends React.Component {
   }
 
   componentDidMount() {
+    this.getMovies();
+  }
+
+  getMovies() {
     fetch('/movies')
       .then(response => response.json())
       .then(response =>
@@ -29,18 +33,18 @@ export default class App extends React.Component {
 
   displayMovies() {
     if (this.state.isLoading) {
-    return (
-      <div
-        style={{
-          minHeight: '100vh',
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      >
-        <CircularProgress style={{width: 200, height: 200}} />
-      </div>
-    );
+      return (
+        <div
+          style={{
+            minHeight: '100vh',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <CircularProgress style={{ width: 200, height: 200 }} />
+        </div>
+      );
     } else {
       return (
         <MoviePosterList>
@@ -55,6 +59,23 @@ export default class App extends React.Component {
     }
   }
 
+  searchMovies = searchCriteria => {
+    this.setState({ isLoading: true });
+    if (searchCriteria) {
+      fetch(`/search/movie?searchCriteria=${searchCriteria}`)
+        .then(response => response.json())
+        .then(response =>
+          this.setState({ movies: response.data, isLoading: false })
+        )
+        .catch(err => {
+          console.log('ERROR', err);
+          this.setState({ movies: [], isLoading: false });
+        });
+    } else {
+      this.getMovies();
+    }
+  };
+
   render() {
     return (
       <div className="App">
@@ -64,7 +85,7 @@ export default class App extends React.Component {
               <h1>Lattice Show You</h1>
               <p>... the most popular movies this year!</p>
             </header>
-            <SearchInput />
+            <SearchInput onSearch={this.searchMovies} />
           </div>
 
           {this.displayMovies()}
