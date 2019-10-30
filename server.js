@@ -1,11 +1,16 @@
 const express = require('express');
 const axios = require('axios');
 const app = express();
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 const API_KEY = '2af40492d105b5c1dc33be95d778a3d7';
 
 app.listen(port, () => console.log(`Listening on port ${port}`));
+
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  next();
+});
 
 // Get Popular Movies
 app.get('/movies', (req, res) => {
